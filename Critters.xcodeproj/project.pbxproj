@@ -1,0 +1,308 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BC430E3E15C072AB006978B4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC430E3D15C072AB006978B4 /* Cocoa.framework */; };
+		BC430E4815C072AB006978B4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC430E4615C072AB006978B4 /* InfoPlist.strings */; };
+		BC430E4A15C072AC006978B4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BC430E4915C072AC006978B4 /* main.m */; };
+		BC430E4E15C072AC006978B4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = BC430E4C15C072AC006978B4 /* Credits.rtf */; };
+		BC430E5115C072AC006978B4 /* TKDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = BC430E5015C072AC006978B4 /* TKDocument.m */; };
+		BC430E5415C072AC006978B4 /* TKDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC430E5215C072AC006978B4 /* TKDocument.xib */; };
+		BC430E5715C072AC006978B4 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC430E5515C072AC006978B4 /* MainMenu.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		BC430E3915C072AB006978B4 /* Critters.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Critters.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BC430E3D15C072AB006978B4 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		BC430E4015C072AB006978B4 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		BC430E4115C072AB006978B4 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		BC430E4215C072AB006978B4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		BC430E4515C072AB006978B4 /* Critters-Info.plist */ = {isa = PBXFileReference; path = "Critters-Info.plist"; sourceTree = "<group>"; };
+		BC430E4715C072AB006978B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BC430E4915C072AC006978B4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		BC430E4B15C072AC006978B4 /* Critters-Prefix.pch */ = {isa = PBXFileReference; path = "Critters-Prefix.pch"; sourceTree = "<group>"; };
+		BC430E4D15C072AC006978B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		BC430E4F15C072AC006978B4 /* TKDocument.h */ = {isa = PBXFileReference; path = TKDocument.h; sourceTree = "<group>"; };
+		BC430E5015C072AC006978B4 /* TKDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKDocument.m; sourceTree = "<group>"; };
+		BC430E5315C072AC006978B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TKDocument.xib; sourceTree = "<group>"; };
+		BC430E5615C072AC006978B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BC430E3615C072AB006978B4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC430E3E15C072AB006978B4 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BC430E2E15C072AB006978B4 = {
+			isa = PBXGroup;
+			children = (
+				BC430E4315C072AB006978B4 /* Critters */,
+				BC430E3C15C072AB006978B4 /* Frameworks */,
+				BC430E3A15C072AB006978B4 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BC430E3A15C072AB006978B4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BC430E3915C072AB006978B4 /* Critters.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BC430E3C15C072AB006978B4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BC430E3D15C072AB006978B4 /* Cocoa.framework */,
+				BC430E3F15C072AB006978B4 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BC430E3F15C072AB006978B4 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BC430E4015C072AB006978B4 /* AppKit.framework */,
+				BC430E4115C072AB006978B4 /* CoreData.framework */,
+				BC430E4215C072AB006978B4 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		BC430E4315C072AB006978B4 /* Critters */ = {
+			isa = PBXGroup;
+			children = (
+				BC430E4F15C072AC006978B4 /* TKDocument.h */,
+				BC430E5015C072AC006978B4 /* TKDocument.m */,
+				BC430E5215C072AC006978B4 /* TKDocument.xib */,
+				BC430E5515C072AC006978B4 /* MainMenu.xib */,
+				BC430E4415C072AB006978B4 /* Supporting Files */,
+			);
+			path = Critters;
+			sourceTree = "<group>";
+		};
+		BC430E4415C072AB006978B4 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				BC430E4515C072AB006978B4 /* Critters-Info.plist */,
+				BC430E4615C072AB006978B4 /* InfoPlist.strings */,
+				BC430E4915C072AC006978B4 /* main.m */,
+				BC430E4B15C072AC006978B4 /* Critters-Prefix.pch */,
+				BC430E4C15C072AC006978B4 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BC430E3815C072AB006978B4 /* Critters */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BC430E5A15C072AC006978B4 /* Build configuration list for PBXNativeTarget "Critters" */;
+			buildPhases = (
+				BC430E3515C072AB006978B4 /* Sources */,
+				BC430E3615C072AB006978B4 /* Frameworks */,
+				BC430E3715C072AB006978B4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Critters;
+			productName = Critters;
+			productReference = BC430E3915C072AB006978B4 /* Critters.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BC430E3015C072AB006978B4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = TK;
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = BC430E3315C072AB006978B4 /* Build configuration list for PBXProject "Critters" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = BC430E2E15C072AB006978B4;
+			productRefGroup = BC430E3A15C072AB006978B4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BC430E3815C072AB006978B4 /* Critters */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BC430E3715C072AB006978B4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC430E4815C072AB006978B4 /* InfoPlist.strings in Resources */,
+				BC430E4E15C072AC006978B4 /* Credits.rtf in Resources */,
+				BC430E5415C072AC006978B4 /* TKDocument.xib in Resources */,
+				BC430E5715C072AC006978B4 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BC430E3515C072AB006978B4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BC430E4A15C072AC006978B4 /* main.m in Sources */,
+				BC430E5115C072AC006978B4 /* TKDocument.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		BC430E4615C072AB006978B4 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC430E4715C072AB006978B4 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		BC430E4C15C072AC006978B4 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC430E4D15C072AC006978B4 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		BC430E5215C072AC006978B4 /* TKDocument.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC430E5315C072AC006978B4 /* en */,
+			);
+			name = TKDocument.xib;
+			sourceTree = "<group>";
+		};
+		BC430E5515C072AC006978B4 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BC430E5615C072AC006978B4 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		BC430E5815C072AC006978B4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		BC430E5915C072AC006978B4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		BC430E5B15C072AC006978B4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Critters/Critters-Prefix.pch";
+				INFOPLIST_FILE = "Critters/Critters-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		BC430E5C15C072AC006978B4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Critters/Critters-Prefix.pch";
+				INFOPLIST_FILE = "Critters/Critters-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BC430E3315C072AB006978B4 /* Build configuration list for PBXProject "Critters" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC430E5815C072AC006978B4 /* Debug */,
+				BC430E5915C072AC006978B4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BC430E5A15C072AC006978B4 /* Build configuration list for PBXNativeTarget "Critters" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC430E5B15C072AC006978B4 /* Debug */,
+				BC430E5C15C072AC006978B4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BC430E3015C072AB006978B4 /* Project object */;
+}
