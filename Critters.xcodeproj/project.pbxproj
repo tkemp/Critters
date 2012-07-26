@@ -14,6 +14,9 @@
 		BC430E5115C072AC006978B4 /* TKDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = BC430E5015C072AC006978B4 /* TKDocument.m */; };
 		BC430E5415C072AC006978B4 /* TKDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC430E5215C072AC006978B4 /* TKDocument.xib */; };
 		BC430E5715C072AC006978B4 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC430E5515C072AC006978B4 /* MainMenu.xib */; };
+		BC430E6015C07304006978B4 /* TKCritter.m in Sources */ = {isa = PBXBuildFile; fileRef = BC430E5F15C07304006978B4 /* TKCritter.m */; };
+		BC430E6415C083B5006978B4 /* TKWorld.m in Sources */ = {isa = PBXBuildFile; fileRef = BC430E6315C083B5006978B4 /* TKWorld.m */; };
+		BC430E6715C09A34006978B4 /* TKGridSquare.m in Sources */ = {isa = PBXBuildFile; fileRef = BC430E6615C09A34006978B4 /* TKGridSquare.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,15 +25,22 @@
 		BC430E4015C072AB006978B4 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		BC430E4115C072AB006978B4 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		BC430E4215C072AB006978B4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		BC430E4515C072AB006978B4 /* Critters-Info.plist */ = {isa = PBXFileReference; path = "Critters-Info.plist"; sourceTree = "<group>"; };
+		BC430E4515C072AB006978B4 /* Critters-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Critters-Info.plist"; sourceTree = "<group>"; };
 		BC430E4715C072AB006978B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BC430E4915C072AC006978B4 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		BC430E4B15C072AC006978B4 /* Critters-Prefix.pch */ = {isa = PBXFileReference; path = "Critters-Prefix.pch"; sourceTree = "<group>"; };
+		BC430E4B15C072AC006978B4 /* Critters-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Critters-Prefix.pch"; sourceTree = "<group>"; };
 		BC430E4D15C072AC006978B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		BC430E4F15C072AC006978B4 /* TKDocument.h */ = {isa = PBXFileReference; path = TKDocument.h; sourceTree = "<group>"; };
+		BC430E4F15C072AC006978B4 /* TKDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDocument.h; sourceTree = "<group>"; };
 		BC430E5015C072AC006978B4 /* TKDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKDocument.m; sourceTree = "<group>"; };
 		BC430E5315C072AC006978B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TKDocument.xib; sourceTree = "<group>"; };
 		BC430E5615C072AC006978B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		BC430E5E15C07304006978B4 /* TKCritter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKCritter.h; sourceTree = "<group>"; };
+		BC430E5F15C07304006978B4 /* TKCritter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKCritter.m; sourceTree = "<group>"; };
+		BC430E6115C074C6006978B4 /* constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
+		BC430E6215C083B5006978B4 /* TKWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKWorld.h; sourceTree = "<group>"; };
+		BC430E6315C083B5006978B4 /* TKWorld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKWorld.m; sourceTree = "<group>"; };
+		BC430E6515C09A34006978B4 /* TKGridSquare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGridSquare.h; sourceTree = "<group>"; };
+		BC430E6615C09A34006978B4 /* TKGridSquare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKGridSquare.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +94,7 @@
 		BC430E4315C072AB006978B4 /* Critters */ = {
 			isa = PBXGroup;
 			children = (
+				BC430E5D15C072E6006978B4 /* Model */,
 				BC430E4F15C072AC006978B4 /* TKDocument.h */,
 				BC430E5015C072AC006978B4 /* TKDocument.m */,
 				BC430E5215C072AC006978B4 /* TKDocument.xib */,
@@ -103,6 +114,20 @@
 				BC430E4C15C072AC006978B4 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		BC430E5D15C072E6006978B4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				BC430E6115C074C6006978B4 /* constants.h */,
+				BC430E5E15C07304006978B4 /* TKCritter.h */,
+				BC430E5F15C07304006978B4 /* TKCritter.m */,
+				BC430E6215C083B5006978B4 /* TKWorld.h */,
+				BC430E6315C083B5006978B4 /* TKWorld.m */,
+				BC430E6515C09A34006978B4 /* TKGridSquare.h */,
+				BC430E6615C09A34006978B4 /* TKGridSquare.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,6 +197,9 @@
 			files = (
 				BC430E4A15C072AC006978B4 /* main.m in Sources */,
 				BC430E5115C072AC006978B4 /* TKDocument.m in Sources */,
+				BC430E6015C07304006978B4 /* TKCritter.m in Sources */,
+				BC430E6415C083B5006978B4 /* TKWorld.m in Sources */,
+				BC430E6715C09A34006978B4 /* TKGridSquare.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,6 +329,7 @@
 				BC430E5C15C072AC006978B4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
