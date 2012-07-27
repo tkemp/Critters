@@ -7,6 +7,7 @@
 //
 
 #import "TKCritter.h"
+#import "TKWorld.h"
 
 @implementation TKCritter
 {
@@ -15,19 +16,21 @@
     int age_;
     BOOL sex_;
     BOOL isAlive_;
-    Position pos_;
+    Position position_;
+    TKWorld * _world;
 }
 @synthesize strength = strength_;
 @synthesize health = health_;
 @synthesize age = age_;
 @synthesize sex = sex_;
 @synthesize isAlive = isAlive_;
-@synthesize pos = pos_;
+@synthesize position = position_;
 
-- (id)initWithSex:(BOOL) gender
+- (id)initWithSex:(BOOL) gender world:(TKWorld *) homeWorld
 {
     self = [super init];
     if (self) {
+        _world = homeWorld;
         strength_ = 1.0;
         health_ = 1.0;
         age_ = 0;
@@ -92,7 +95,8 @@
 
 - (NSString *) description
 {
-    return [NSString stringWithFormat:@"hlt:%f str:%f age:%d sex:%d alv:%d",health_, strength_, age_, sex_, isAlive_];
+    NSString * strSex = sex_ == MALE ? @"Male" : @"Female";
+    return [NSString stringWithFormat:@"hlt:%f str:%f age:%d sex:%@ alv:%d pos:%d,%d",health_, strength_, age_, strSex, isAlive_, position_.col, position_.row];
 }
 
 

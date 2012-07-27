@@ -1,35 +1,63 @@
 //
-//  TKDocument.m
+//  TKCritterDocument.m
 //  Critters
 //
 //  Created by Tim Kemp on 25/07/2012.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "TKDocument.h"
+#import "TKCritterDocument.h"
 
-@implementation TKDocument
+@implementation TKCritterDocument
+{
+    TKWorld * world_;
+    TKCritterWindowController * _windowController;
+}
+@synthesize world = world_;
 
 - (id)init
 {
     self = [super init];
     if (self) {
-        // Add your subclass-specific initialization here.
+        world_ = [[TKWorld alloc] initWithCols:8 rows:8 wrap:YES];
     }
     return self;
 }
 
-- (NSString *)windowNibName
+#pragma mark Model controller stuff
+- (void) evaluate
 {
-    // Override returning the nib file name of the document
-    // If you need to use a subclass of NSWindowController or if your document supports multiple NSWindowControllers, you should remove this method and override -makeWindowControllers instead.
-    return @"TKDocument";
+    [[self world] evaluate];
 }
 
-- (void)windowControllerDidLoadNib:(NSWindowController *)aController
+#pragma mark Debug & development
+
+/** Seed a random population of critters into the world.
+ 
+ Uses a mod 4 random number generator to assign critters to cells and determine critter's sex.
+ 
+ */
+- (void) makeRandomPopulation
 {
-    [super windowControllerDidLoadNib:aController];
-    // Add any code here that needs to be executed once the windowController has loaded the document's window.
+    /*for (int i = 0; i < [world_ cols] * [world_ rows]; i++) {
+        int val = 1 + rand() % 8;
+        if (val <= 2) {
+            Position pos = [world_ positionFromIndex:i];
+            BOOL sex = val == 2 ? MALE : FEMALE;
+            [world_ makeCritterAtPos:pos ofSex:sex];
+        }
+    }*/
+    Position p = {0, 0};
+    [world_ makeCritterAtPos:p ofSex:FEMALE];
+}
+
+#pragma mark NSDocument stuff
+
+- (void)makeWindowControllers
+{
+    TKCritterWindowController * controller = [[TKCritterWindowController alloc] init];
+    [self addWindowController:controller];
+    _windowController = [[self windowControllers] objectAtIndex:0];
 }
 
 + (BOOL)autosavesInPlace

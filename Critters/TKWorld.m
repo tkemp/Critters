@@ -11,7 +11,6 @@
 @implementation TKWorld
 {
     NSMutableArray * _curGrid;
-    NSMutableSet * _livingCritters;
     int cols_;
     int rows_;
     BOOL wrap_;
@@ -19,6 +18,7 @@
 @synthesize cols = cols_;
 @synthesize rows = rows_;
 @synthesize wrap = wrap_;
+@synthesize livingCritters;
 
 - (id) initWithCols:(int)cols rows:(int)rows wrap:(BOOL)wrapWorld
 {
@@ -31,16 +31,19 @@
         for (int i = 0; i < cols_ * rows_; i++) {
             [_curGrid addObject:[[TKGridSquare alloc] init]];
         }
-        _livingCritters = [NSMutableSet setWithCapacity:cols_ * rows_];
+        livingCritters = [NSMutableSet setWithCapacity:cols_ * rows_];
     }
     
     return self;
 }
 
 #pragma mark Model methods
-- (NSArray *) neighboursAtCol:(int) col row:(int) row
+- (NSArray *) neighboursAtPosition:(Position) pos
 {
     NSArray * result;
+    
+    int col = pos.col;
+    int row = pos.row;
     
     // Get all the neighbours of the cell. Start at top left and work around.    
     int umCol = col;     int umRow = row - 1;
@@ -98,6 +101,11 @@
     return result;
 }
 
+- (TKGridSquare *) gridSquareAtPosition:(Position) pos
+{
+    return [self gridSquareAtCol:(pos.col) row:(pos.row)];
+}
+
 - (TKGridSquare *) gridSquareAtCol:(int)col row:(int)row
 {
     TKGridSquare * result;
@@ -116,19 +124,26 @@
     return result;
 }
 
+- (TKGridSquare *) gridSquareAtIndex:(int)index
+{
+    TKGridSquare * result;
+    
+    result = [_curGrid objectAtIndex:index];
+    
+    return result;
+}
+
 - (void) evaluate
 {
     NSMutableArray * nextGrid = [NSMutableArray arrayWithArray:_curGrid];
-    
-    for (TKCritter * critter in _livingCritters) {
-        int curCol = [critter pos].col;
-        int curRow = [critter pos].row;
-        Action act = [critter getNextAction:[self neighboursAtCol:curCol row:curRow]];
+
+    for (TKCritter * critter in [self livingCritters]) {
+        Action act = [critter getNextAction:[self neighboursAtPosition:[critter position]]];
         switch (act) {
             case Move: {
                 Direction dir = [critter getMovementDirection];
-                Position newPos = [self positionForDirection:dir fromCol:curCol fromRow:curRow];
-                [self moveCritter:critter fromPos:[critter pos] toPos:newPos fromGrid:nextGrid toGrid:nextGrid];
+                Position newPos = [self positionForDirection:dir fromPos:[critter position]];
+                [self moveCritter:critter fromPosition:[critter position] toPosition:newPos fromGrid:nextGrid toGrid:nextGrid];
             }
                 break;
                 
@@ -141,16 +156,35 @@
 }
 
 #pragma mark Utility methods
-- (void) moveCritter:(TKCritter *) critter fromPos:(Position) fromPos toPos:(Position) toPos fromGrid:(NSMutableArray *) fromGrid toGrid:(NSMutableArray *) toGrid
+- (TKCritter *) makeCritterAtPos:(Position) pos ofSex:(BOOL)sex
+{
+    TKCritter * critter = [[TKCritter alloc] initWithSex:sex world:self];
+    
+    [critter setPosition:pos];
+    TKGridSquare * home = [self gridSquareAtPosition:pos];
+    [home addCritter:critter];
+    [[self livingCritters] addObject:critter];
+    
+    return critter;
+}
+
+- (void) critterDied:(TKCritter *) critter
+{
+    TKGridSquare * home = [self gridSquareAtPosition:[critter position]];
+    [home removeCritter:critter];
+    [[self livingCritters] removeObject:critter];
+}
+
+- (void) moveCritter:(TKCritter *) critter fromPosition:(Position) fromPos toPosition:(Position) toPos fromGrid:(NSMutableArray *) fromGrid toGrid:(NSMutableArray *) toGrid
 {
     TKGridSquare * source = [self gridSquareAtCol:fromPos.col row:fromPos.row inGrid:fromGrid];
     TKGridSquare * dest = [self gridSquareAtCol:toPos.col row:toPos.row inGrid:toGrid];
-    [[source contents] removeObject:critter];
-    [[dest contents] addObject:critter];
-    [critter setPos:toPos];
+    [source removeCritter:critter];
+    [dest addCritter:critter];
+    [critter setPosition:toPos];
 }
 
-- (Position) positionForDirection:(Direction)direction fromCol:(int)col fromRow:(int)row
+- (Position) positionForDirection:(Direction) direction fromPos:(Position) startPos;
 {
     Position result;
     int dCol, dRow = 0;
@@ -188,16 +222,25 @@
             break;
     }
     
-    result.col = (col + dCol) % cols_;
-    result.row = (row + dRow) % rows_;
+    result.col = (startPos.col + dCol) % cols_;
+    result.row = (startPos.row + dRow) % rows_;
     
-    // Broken mod
+    // Broken mod fix
     result.col < 0 ? result.col += cols_ : result.col;
     result.row < 0 ? result.row += rows_ : result.row;
 
     return result;
 }
 
+- (Position) positionFromIndex:(int) index
+{
+    Position result;
+    
+    result.col = [self colFromIndex:index];
+    result.row = [self rowFromIndex:index];
+
+    return result;
+}
 
 - (int) indexFromCol:(int)col row:(int)row
 {

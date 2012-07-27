@@ -9,7 +9,28 @@
 #import "TKGridSquare.h"
 
 @implementation TKGridSquare
+{
+    NSMutableSet * contents_;
+}
+@synthesize critters = contents_;
 
-@synthesize contents;
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        contents_ = [NSMutableSet setWithCapacity:10];
+    }
+    return self;
+}
+
+- (void) addCritter:(TKCritter *) critter
+{
+    [contents_ addObject:critter];
+}
+
+- (void) removeCritter:(TKCritter *) critter
+{
+    [contents_ removeObject:critter];
+}
 
 @end

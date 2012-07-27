@@ -7,9 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TKCritter.h"
 
 @interface TKGridSquare : NSObject
+@property(readonly) NSSet * critters;
 
-@property(strong) NSMutableSet * contents;
+- (void) addCritter:(TKCritter *) critter;
+- (void) removeCritter:(TKCritter *) critter;
 
 @end
