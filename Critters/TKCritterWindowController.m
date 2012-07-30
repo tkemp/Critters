@@ -47,15 +47,18 @@
         TKGridSquare * square = [[doc world] gridSquareAtIndex:i];
         for (TKCritter * critter in [square critters]) {
             [self logScreenMessage:[critter description]];
-            [self logScreenMessage:@"\t"];
-            [self logScreenMessage:[NSString stringWithFormat:@" Grid square count:%ld\n", [[square critters] count]]];
+            [self logScreenMessage:@" "];
+            [self logScreenMessage:[NSString stringWithFormat:@" sharing:%ld\n", [[square critters] count]]];
         }
+        [worldView plotSquare:square];
     }
+    [worldView setNeedsDisplay:YES];
 }
 
 - (IBAction)evaluateClicked:(id)sender
 {
     [[self document] evaluate];
+    [self listCrittersClicked:nil];
 }
 
 #pragma mark Main stuff

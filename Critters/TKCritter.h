@@ -8,23 +8,27 @@
 
 #import <Foundation/Foundation.h>
 #import "constants.h"
+#import "TKCritterAction.h"
 
 @class TKWorld;
 
 @interface TKCritter : NSObject
 
+@property(strong) NSString * name;
 @property(readonly) float strength;
 @property(readonly) float health;
 @property(readonly) int age;
-@property(readonly) BOOL sex;
+@property(readonly) Gender sex;
+@property(readonly) BOOL isReadyToMate;
 @property BOOL isAlive;
 @property(readonly) BOOL needsToEat;
 @property Position position;
+@property(weak) TKCritter * target;
 
-- (id) initWithSex:(BOOL) gender world:(TKWorld *) homeWorld;
+- (id) initWithSex:(Gender) gender world:(TKWorld *) homeWorld;
 
-- (Action) getNextAction:(NSArray *) localEnvironment;
-- (Direction) getMovementDirection;
+#pragma mark This critter's state
+- (TKCritterAction *) getNextAction:(NSArray *) localEnvironment;
 - (void) incrementAge;
 - (void) incrementHealth;
 - (void) decrementHealth;
@@ -32,5 +36,6 @@
 - (void) decrementStrength;
 - (void) die;
 
+#pragma mark Other critters
 
 @end

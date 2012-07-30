@@ -20,6 +20,7 @@
 		BC4CE78715C1E5B5006CA29D /* TKCritterWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4CE78515C1E5B5006CA29D /* TKCritterWindowController.m */; };
 		BC4CE78C15C1F022006CA29D /* TKTopDownWorldView.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4CE78A15C1F022006CA29D /* TKTopDownWorldView.m */; };
 		BC9348A615C32C0C009C9CD6 /* TKGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = BC9348A515C32C0C009C9CD6 /* TKGrid.m */; };
+		BC9348A915C351E3009C9CD6 /* TKCritterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BC9348A815C351E3009C9CD6 /* TKCritterAction.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,14 +35,14 @@
 		BC430E4B15C072AC006978B4 /* Critters-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Critters-Prefix.pch"; sourceTree = "<group>"; };
 		BC430E4D15C072AC006978B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		BC430E4F15C072AC006978B4 /* TKCritterDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.objj.h; path = TKCritterDocument.h; sourceTree = "<group>"; };
-		BC430E5015C072AC006978B4 /* TKCritterDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKCritterDocument.m; sourceTree = "<group>"; };
+		BC430E5015C072AC006978B4 /* TKCritterDocument.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TKCritterDocument.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		BC430E5315C072AC006978B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/TKCritterDocumentWindow.xib; sourceTree = "<group>"; };
 		BC430E5615C072AC006978B4 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		BC430E5E15C07304006978B4 /* TKCritter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKCritter.h; sourceTree = "<group>"; };
-		BC430E5F15C07304006978B4 /* TKCritter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKCritter.m; sourceTree = "<group>"; };
-		BC430E6115C074C6006978B4 /* constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = constants.h; sourceTree = "<group>"; };
-		BC430E6215C083B5006978B4 /* TKWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKWorld.h; sourceTree = "<group>"; };
-		BC430E6315C083B5006978B4 /* TKWorld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKWorld.m; sourceTree = "<group>"; };
+		BC430E5E15C07304006978B4 /* TKCritter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TKCritter.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		BC430E5F15C07304006978B4 /* TKCritter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TKCritter.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		BC430E6115C074C6006978B4 /* constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = constants.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		BC430E6215C083B5006978B4 /* TKWorld.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TKWorld.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		BC430E6315C083B5006978B4 /* TKWorld.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TKWorld.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		BC430E6515C09A34006978B4 /* TKGridSquare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGridSquare.h; sourceTree = "<group>"; };
 		BC430E6615C09A34006978B4 /* TKGridSquare.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKGridSquare.m; sourceTree = "<group>"; };
 		BC4CE78415C1E5B5006CA29D /* TKCritterWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.objj.h; path = TKCritterWindowController.h; sourceTree = "<group>"; };
@@ -50,6 +51,8 @@
 		BC4CE78A15C1F022006CA29D /* TKTopDownWorldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKTopDownWorldView.m; sourceTree = "<group>"; };
 		BC9348A415C32C0C009C9CD6 /* TKGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGrid.h; sourceTree = "<group>"; };
 		BC9348A515C32C0C009C9CD6 /* TKGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKGrid.m; sourceTree = "<group>"; };
+		BC9348A715C351E3009C9CD6 /* TKCritterAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TKCritterAction.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		BC9348A815C351E3009C9CD6 /* TKCritterAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TKCritterAction.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +136,8 @@
 				BC430E5F15C07304006978B4 /* TKCritter.m */,
 				BC430E6215C083B5006978B4 /* TKWorld.h */,
 				BC430E6315C083B5006978B4 /* TKWorld.m */,
+				BC9348A715C351E3009C9CD6 /* TKCritterAction.h */,
+				BC9348A815C351E3009C9CD6 /* TKCritterAction.m */,
 				BC430E6515C09A34006978B4 /* TKGridSquare.h */,
 				BC430E6615C09A34006978B4 /* TKGridSquare.m */,
 			);
@@ -234,6 +239,7 @@
 				BC4CE78715C1E5B5006CA29D /* TKCritterWindowController.m in Sources */,
 				BC4CE78C15C1F022006CA29D /* TKTopDownWorldView.m in Sources */,
 				BC9348A615C32C0C009C9CD6 /* TKGrid.m in Sources */,
+				BC9348A915C351E3009C9CD6 /* TKCritterAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,7 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "constants.h"
+#import "TKGridSquare.h"
+#import "TKCritter.h"
 
 @interface TKTopDownWorldView : NSView
+
+- (void) plotSquare:(TKGridSquare *) square;
 
 @end

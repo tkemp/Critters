@@ -13,12 +13,14 @@
     NSMutableSet * contents_;
 }
 @synthesize critters = contents_;
+@synthesize coordinates;
 
-- (id)init
+- (id)initWithCoordinates:(Position) coords
 {
     self = [super init];
     if (self) {
         contents_ = [NSMutableSet setWithCapacity:10];
+        coordinates = coords;
     }
     return self;
 }
