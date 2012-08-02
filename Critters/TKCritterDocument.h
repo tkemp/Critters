@@ -11,11 +11,14 @@
 #import "TKWorld.h"
 #import "TKGridSquare.h"
 #import "TKCritter.h"
+#import "TKResource.h"
 #import <stdlib.h>
 
 @interface TKCritterDocument : NSDocument
 
 @property(strong) TKWorld * world;
+@property int cols;
+@property int rows;
 
 - (void) evaluate;
 - (void) makeRandomPopulation;

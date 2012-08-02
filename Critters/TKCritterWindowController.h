@@ -20,6 +20,6 @@
 - (IBAction)listCrittersClicked:(id)sender;
 - (IBAction)evaluateClicked:(id)sender;
 
-- (void) logScreenMessage:(NSString *) msg;
+- (void) logScreenMessage:(NSNotification *) notification;
 
 @end

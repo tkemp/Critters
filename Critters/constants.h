@@ -13,12 +13,15 @@
 #define FEMALE NO
 #define MAX_HEALTH 1.0
 #define MAX_STRENGTH 1.0
+#define MIN_HEALTH_INCREMENT 0.05
+#define MIN_STRENGTH_INCREMENT 0.05
 #define OVERCROWDING_LIMIT 4
+#define MIN_RESOURCE_QUANTITY 0.0
+#define MAX_RESOURCE_QUANTITY 1.0
 
-#pragma mark Typedefs
+#pragma mark Critter & world information
 
 typedef BOOL Gender;
-
 typedef enum Action {
     Move,
     Eat,
@@ -38,19 +41,16 @@ typedef struct Direction {
 } Direction;
 
 typedef enum DirectionName {
-    North = 0,
-    NorthEast = 1,
-    East = 2,
-    SouthEast = 3,
-    South = 4,
-    SouthWest = 5,
-    West = 6,
-    NorthWest = 7,
-    None = 8
+    DirNorth = 0,
+    DirNorthEast = 1,
+    DirEast = 2,
+    DirSouthEast = 3,
+    DirSouth = 4,
+    DirSouthWest = 5,
+    DirWest = 6,
+    DirNorthWest = 7,
+    DirNone = 8
 } DirectionName;
-
-typedef int foo;
-typedef int bar;
 
 static const struct Direction Directions[9] = {
     {0, 1}, // N
@@ -64,9 +64,21 @@ static const struct Direction Directions[9] = {
     {0, 0}   // None
 };
 
+typedef enum ResourceType {
+    Food = 0,
+    Danger = 1
+} ResourceType;
+
+#pragma mark Utility functions
+
 static DirectionName randomDirection()
 {
     return rand() % 9;
+}
+
+static Position randomPosition(int cols, int rows)
+{
+    return (Position) { rand() % cols, rand() % rows };
 }
 
 static BOOL matchPositions(Position a, Position b)

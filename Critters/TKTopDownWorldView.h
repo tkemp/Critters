@@ -13,6 +13,9 @@
 
 @interface TKTopDownWorldView : NSView
 
+@property int cols;
+@property int rows;
+
 - (void) plotSquare:(TKGridSquare *) square;
 
 @end

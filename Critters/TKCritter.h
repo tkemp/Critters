@@ -21,7 +21,6 @@
 @property(readonly) Gender sex;
 @property(readonly) BOOL isReadyToMate;
 @property BOOL isAlive;
-@property(readonly) BOOL needsToEat;
 @property Position position;
 @property(weak) TKCritter * target;
 
@@ -30,10 +29,12 @@
 #pragma mark This critter's state
 - (TKCritterAction *) getNextAction:(NSArray *) localEnvironment;
 - (void) incrementAge;
-- (void) incrementHealth;
 - (void) decrementHealth;
-- (void) incrementStrength;
-- (void) decrementStrength;
+- (void) resetStrength;
+- (void) increaseHealthBy:(float) vitality;
+- (void) increaseStrengthBy:(float) fortitude;
+- (void) reduceHealthBy:(float) damage;
+- (void) reduceStrengthBy:(float) weariness;
 - (void) die;
 
 #pragma mark Other critters

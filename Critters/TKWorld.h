@@ -13,6 +13,7 @@
 
 @interface TKWorld : NSObject
 
+@property(strong, readonly) NSArray * gridSquares;
 @property int cols;
 @property int rows;
 @property BOOL wrap;
@@ -29,7 +30,6 @@
 - (void) evaluate;
 
 #pragma mark Critter interactions
-- (TKCritter *) resolveMatingBetween:(TKCritter *) piglet and:(TKCritter *) monkey;
 #pragma mark Utility methods - used for initial population seed only
 - (TKCritter *) makeCritterAtPos:(Position) pos ofSex:(Gender) sex;
 #pragma mark General utility methods

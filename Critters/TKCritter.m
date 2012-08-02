@@ -51,15 +51,56 @@
 
 - (TKCritterAction *) getNextAction:(NSArray *)localEnvironment
 {
-    TKCritterAction * result = [[TKCritterAction alloc] initWithDirection:Directions[None] action:Nothing];
+    TKCritterAction * result = [[TKCritterAction alloc] initWithDirection:Directions[DirNone] action:Nothing];
     
-    TKGridSquare * ourSquare = [localEnvironment objectAtIndex:None];
-    isReadyToMate_ = (age_ % 4 == 0 && age_ > 0);
+    TKGridSquare * ourSquare = [localEnvironment objectAtIndex:DirNone];
+    isReadyToMate_ = (age_ > 4 && health_ >= MAX_HEALTH / 1.3 && strength_ >= MAX_STRENGTH / 1.3); // Need to be pretty healthy to mate
+    BOOL wantsToFight = (sex_ == MALE && age_ > 4 && health_ >= MAX_HEALTH / 2 && strength_ >= MAX_STRENGTH / 2);
+    BOOL needsToEat = (health_ <= 0.4);
     
-    // Breed once every 4 years
-    if (isReadyToMate_) {
-        NSLog(@"Looking for a shag");
-        Direction nearestMate = Directions[None];
+    ///TODO: Collapse all this into one run through the grid and neighbours: pre-fill nearest threat and nearest mate, then decide what action to take.
+    // If we have to eat (we're dying) then make it a priorty.
+    if (needsToEat) {
+        Direction nearestFood = Directions[DirNone];
+        BOOL foundFood = NO;
+        // First check our grid square
+        for (TKResource * resource in [ourSquare resources]) {
+            if (resource.type == Food) {
+                foundFood = YES;
+                break;
+            }
+        }
+        // Then check the immediate vicinity
+        int relativeDirection = 0;
+        for (TKGridSquare * square in localEnvironment) {
+            if (foundFood)
+                break;
+            for (TKResource * resource in [square resources]) {
+                if (resource.type == Food) {
+                    nearestFood = Directions[relativeDirection];
+                    foundFood = YES;
+                    break;
+                }
+            }
+            
+            relativeDirection++;
+        }
+        if (foundFood) {
+            result.direction = nearestFood;
+            if (matchDirections(nearestFood, Directions[DirNone])) {
+                result.action = Eat;
+            } else  {
+                result.action = Move;
+            }
+            NSString * msg = [NSString stringWithFormat:@"%@ %d,%d Found food dir:%d,%d\n", self.name, self.position.col, self.position.row, nearestFood.dCol, nearestFood.dRow];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"CritterConsoleLog" object:msg];
+
+        } else {
+            result.direction = Directions[randomDirection()];
+            result.action = Move;
+        }
+    } else if (isReadyToMate_) {
+        Direction nearestMate = Directions[DirNone];
         BOOL foundMate = NO;
         // First check our grid square
         for (TKCritter * critter in [ourSquare critters]) {
@@ -87,24 +128,25 @@
         }
         if (foundMate) {
             result.direction = nearestMate;
-            if (matchDirections(nearestMate, Directions[None])) {
+            if (matchDirections(nearestMate, Directions[DirNone])) {
                 result.action = Mate;
             } else  {
                 result.action = Move;
             }
+        } else { // Go wandering in search of a mate
+            result.direction = Directions[randomDirection()];
+            result.action = Move;
         }
-    } else if (sex_ == MALE && age_ > 4) {
-        NSLog(@"Looking for scrap");
+    } else if (wantsToFight) {
         // Not ready to mate, so if we're male of fighting age let's look for a scrap
         // First check our square...
         BOOL foundTarget = NO;
         for (TKCritter * critter in [ourSquare critters]) {
             if (critter.sex == MALE && critter.age > 4 && critter != self) {
                 target = critter;
-                result.direction = Directions[None];
+                result.direction = Directions[DirNone];
                 result.action = Fight;
                 foundTarget = YES;
-                NSLog(@"%@ fighting %@", self.name, target.name);
                 break;
             }
         }
@@ -114,15 +156,21 @@
             if (foundTarget)
                 break;
             for (TKCritter * neighbour in [square critters]) {
-                if ([neighbour sex] == MALE && [neighbour age] > 4) {
+                if ([neighbour sex] == MALE && [neighbour age] > 4 && neighbour != self) {
                     target = neighbour;
                     result.direction = Directions[relativeDirection];
                     result.action = Move;
                     foundTarget = YES;
-                    NSLog(@"Moving to intercept");
                     break;
                 }
             }
+            
+            relativeDirection++;
+        }
+        if ( ! foundTarget) {
+            [self setTarget:nil];
+            result.direction = Directions[randomDirection()];
+            result.action = Move;
         }
     } else {
         // Bugger this, I'm going for a walk.
@@ -134,20 +182,9 @@
     return result;
 }
 
-- (BOOL) needsToEat
-{
-    return (health_ < 1.0 && (health_ < 1.0 || strength_ < 1.0));
-}
-
 - (void) incrementAge
 {
     age_++;
-}
-
-- (void) incrementHealth
-{
-    health_++;
-    health_ = MAX(health_, MAX_HEALTH);
 }
 
 - (void) decrementHealth
@@ -157,16 +194,37 @@
         [self die];
 }
 
-- (void) incrementStrength
+- (void) resetStrength
 {
-    strength_++;
-    strength_ = MAX(strength_, MAX_STRENGTH);
+    strength_ = MAX_STRENGTH;
 }
 
-- (void) decrementStrength
+- (void) increaseHealthBy:(float) vitality
 {
-    strength_--;
-    strength_ = MIN(strength_, 0.0);
+    vitality = MAX(vitality, MIN_HEALTH_INCREMENT);
+    health_ = MIN(MAX_HEALTH, health_ + vitality);
+}
+
+- (void) increaseStrengthBy:(float) fortitude
+{
+    fortitude = MAX(fortitude, MIN_STRENGTH_INCREMENT);
+    strength_ = MIN(MAX_STRENGTH, strength_ + fortitude);
+}
+
+- (void) reduceHealthBy:(float) damage
+{
+    damage = MAX(damage, MIN_HEALTH_INCREMENT);
+    health_ = MAX(0, health_ - damage);
+    if (health_ == 0)
+        [self die];
+}
+
+- (void) reduceStrengthBy:(float) weariness
+{
+    weariness = MAX(weariness, MIN_STRENGTH_INCREMENT);
+    strength_ = MAX(0, strength_ - weariness);
+    if (strength_ == 0)
+        [self die];
 }
 
 - (void) die

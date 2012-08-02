@@ -14,12 +14,16 @@
     TKCritterWindowController * _windowController;
 }
 @synthesize world = world_;
+@synthesize cols;
+@synthesize rows;
 
 - (id)init
 {
     self = [super init];
     if (self) {
-        world_ = [[TKWorld alloc] initWithCols:8 rows:8 wrap:YES];
+        cols = 8;
+        rows = 8;
+        world_ = [[TKWorld alloc] initWithCols:self.cols rows:self.rows wrap:YES];
     }
     return self;
 }
@@ -39,20 +43,24 @@
  */
 - (void) makeRandomPopulation
 {
-//    for (int i = 0; i < [world_ cols] * [world_ rows]; i++) {
-//        int val = 1 + rand() % 8;
-//        if (val <= 2) {
-//            Position pos = [world_ positionFromIndex:i];
-//            Gender sex = val == 2 ? MALE : FEMALE;
-//            [world_ makeCritterAtPos:pos ofSex:sex];
-//        }
-//    }
-
-    [[world_ makeCritterAtPos:(Position) {1, 2} ofSex:FEMALE] setName:@"Alice"];
-    [[world_ makeCritterAtPos:(Position) {2, 1} ofSex:MALE] setName:@"Bob"];
-    //[[world_ makeCritterAtPos:(Position) {5, 5} ofSex:FEMALE] setName:@"Carol"];
-    //[[world_ makeCritterAtPos:(Position) {5, 6} ofSex:FEMALE] setName:@"Dawn"];
+    // Four critters in random places
+    [[world_ makeCritterAtPos:randomPosition(self.cols, self.rows) ofSex:FEMALE] setName:@"Alice"];
+    [[world_ makeCritterAtPos:randomPosition(self.cols, self.rows) ofSex:MALE] setName:@"Bob"];
+    [[world_ makeCritterAtPos:randomPosition(self.cols, self.rows) ofSex:FEMALE] setName:@"Carol"];
+    [[world_ makeCritterAtPos:randomPosition(self.cols, self.rows) ofSex:FEMALE] setName:@"Dawn"];
     
+    // Random resources
+    for (int i = 0; i < self.cols * self.rows; i++) {
+        if (rand() % 8 == 0) {
+            TKResource * newRes = [[TKResource alloc] init];
+            [newRes setType:Food];
+            [newRes setQuantity:MAX_RESOURCE_QUANTITY];
+            TKGridSquare * square = [world_.gridSquares objectAtIndex:i];
+            [square addResource:newRes];
+        }
+    }
+    
+    [_windowController listCrittersClicked:self];
 }
 
 #pragma mark NSDocument stuff

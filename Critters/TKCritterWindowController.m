@@ -22,7 +22,6 @@
     self = [super initWithWindowNibName:@"TKCritterDocumentWindow"];
     if (self) {
         // Initialization code here.
-        
     }
     
     return self;
@@ -31,6 +30,9 @@
 - (void)windowDidLoad
 {
     [super windowDidLoad];
+    [worldView setCols:document.cols];
+    [worldView setRows:document.rows];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logScreenMessage:) name:@"CritterConsoleLog" object:nil];
 }
 
 #pragma mark Action handlers
@@ -46,9 +48,8 @@
     for (int i = 0; i < [[doc world] cols] * [[doc world] rows]; i++) {
         TKGridSquare * square = [[doc world] gridSquareAtIndex:i];
         for (TKCritter * critter in [square critters]) {
-            [self logScreenMessage:[critter description]];
-            [self logScreenMessage:@" "];
-            [self logScreenMessage:[NSString stringWithFormat:@" sharing:%ld\n", [[square critters] count]]];
+            NSString * msg = [NSString stringWithFormat:@"%@ sharing: %ld\n", critter.description, square.critters.count];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"CritterConsoleLog" object:msg];
         }
         [worldView plotSquare:square];
     }
@@ -58,14 +59,19 @@
 - (IBAction)evaluateClicked:(id)sender
 {
     [[self document] evaluate];
-    [self listCrittersClicked:nil];
+    for (TKGridSquare * square in self.document.world.gridSquares) {
+        [worldView plotSquare:square];
+    }
+    [worldView setNeedsDisplay:YES];
 }
 
 #pragma mark Main stuff
 
+
 #pragma mark Debug/dev stuff
-- (void) logScreenMessage:(NSString *) msg
+- (void) logScreenMessage:(NSNotification *) notification
 {
+    NSString * msg = [notification object];
     NSTextStorage *textStorage = [debugTextView textStorage];
     [textStorage beginEditing];
     [textStorage replaceCharactersInRange:NSMakeRange([textStorage length], 0)

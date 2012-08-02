@@ -10,12 +10,13 @@
 
 @implementation TKWorld
 {
-    NSMutableArray * _curGrid;
+    NSMutableArray * gridSquares_;
     int cols_;
     int rows_;
     BOOL wrap_;
     NSMutableSet * livingCritters_;
 }
+@synthesize gridSquares = gridSquares_;
 @synthesize cols = cols_;
 @synthesize rows = rows_;
 @synthesize wrap = wrap_;
@@ -28,9 +29,9 @@
         cols_ = cols;
         rows_ = rows;
         wrap_ = wrapWorld;
-        _curGrid = [NSMutableArray arrayWithCapacity:cols_ * rows_];
+        gridSquares_ = [NSMutableArray arrayWithCapacity:cols_ * rows_];
         for (int i = 0; i < cols_ * rows_; i++) {
-            [_curGrid addObject:[[TKGridSquare alloc] initWithCoordinates:[self positionFromIndex:i]]];
+            [gridSquares_ addObject:[[TKGridSquare alloc] initWithCoordinates:[self positionFromIndex:i]]];
         }
         livingCritters_ = [NSMutableSet setWithCapacity:cols_ * rows_];
     }
@@ -88,15 +89,15 @@
         ulRow < 0 ? ulRow += rows_ : ulRow;
     }
     
-    TKGridSquare * um = [self gridSquareAtPosition:(Position){umCol, umRow} inGrid:_curGrid];
-    TKGridSquare * ur = [self gridSquareAtPosition:(Position){urCol, urRow} inGrid:_curGrid];
-    TKGridSquare * mr = [self gridSquareAtPosition:(Position){mrCol, mrRow} inGrid:_curGrid];
-    TKGridSquare * br = [self gridSquareAtPosition:(Position){brCol, brRow} inGrid:_curGrid];
-    TKGridSquare * bm = [self gridSquareAtPosition:(Position){bmCol, bmRow} inGrid:_curGrid];
-    TKGridSquare * bl = [self gridSquareAtPosition:(Position){blCol, blRow} inGrid:_curGrid];
-    TKGridSquare * ml = [self gridSquareAtPosition:(Position){mlCol, mlRow} inGrid:_curGrid];
-    TKGridSquare * ul = [self gridSquareAtPosition:(Position){ulCol, ulRow} inGrid:_curGrid];
-    TKGridSquare * local = [self gridSquareAtPosition:(Position){col, row} inGrid:_curGrid];
+    TKGridSquare * um = [self gridSquareAtPosition:(Position){umCol, umRow} inGrid:gridSquares_];
+    TKGridSquare * ur = [self gridSquareAtPosition:(Position){urCol, urRow} inGrid:gridSquares_];
+    TKGridSquare * mr = [self gridSquareAtPosition:(Position){mrCol, mrRow} inGrid:gridSquares_];
+    TKGridSquare * br = [self gridSquareAtPosition:(Position){brCol, brRow} inGrid:gridSquares_];
+    TKGridSquare * bm = [self gridSquareAtPosition:(Position){bmCol, bmRow} inGrid:gridSquares_];
+    TKGridSquare * bl = [self gridSquareAtPosition:(Position){blCol, blRow} inGrid:gridSquares_];
+    TKGridSquare * ml = [self gridSquareAtPosition:(Position){mlCol, mlRow} inGrid:gridSquares_];
+    TKGridSquare * ul = [self gridSquareAtPosition:(Position){ulCol, ulRow} inGrid:gridSquares_];
+    TKGridSquare * local = [self gridSquareAtPosition:(Position){col, row} inGrid:gridSquares_];
     
     result = [[NSArray alloc] initWithObjects:um, ur, mr, br, bm, bl, ml, ul, local, nil];
     
@@ -115,8 +116,10 @@
 
 - (TKGridSquare *) gridSquareAtIndex:(int)index
 {
-    return [self gridSquareAtIndex:index inGrid:_curGrid];
+    return [self gridSquareAtIndex:index inGrid:gridSquares_];
 }
+
+#pragma mark Main evaluation loop & state management
 
 /** Main evaluation function, run once each tick of the simulation clock
  
@@ -125,19 +128,25 @@
  */
 - (void) evaluate
 {
-    NSMutableArray * nextGrid = [NSMutableArray arrayWithCapacity:[_curGrid count]];
+    NSMutableArray * nextGrid = [NSMutableArray arrayWithCapacity:[gridSquares_ count]];
     for (int i = 0; i < cols_ * rows_; i++) {
-        [nextGrid addObject:[[TKGridSquare alloc] initWithCoordinates:[self positionFromIndex:i]]];
+        TKGridSquare * newSquare = [[TKGridSquare alloc] initWithCoordinates:[self positionFromIndex:i]];
+        [newSquare setResources:[[gridSquares_ objectAtIndex:i] resources]];
+        [nextGrid addObject:newSquare];
     }
     
     NSMutableSet * newborns = [[NSMutableSet alloc] initWithCapacity:cols_ * rows_];
     
     for (TKCritter * critter in [self livingCritters]) {
         [critter incrementAge];
+        
         TKCritterAction * nextMove = [critter getNextAction:[self localEnvironment:[critter position]]];
         Direction dir = [nextMove direction];
         Position newPos = [self positionForDirection:dir fromPos:[critter position]];
         switch ([nextMove action]) {
+            case Move:
+                [critter reduceHealthBy:0.1];
+                break;
             case Mate:
             {
                 TKCritter * newborn = [self resolveMatingBetween:critter and:critter.target];
@@ -148,23 +157,70 @@
             case Fight:
                 [self resolveFightBetween:critter and:critter.target];
                 break;
+            case Eat:
+                [self resolveEating:critter];
+                break;
             default:
                 break;
         }
         [self moveCritter:critter fromPosition:[critter position] toPosition:newPos toGrid:nextGrid];
     }
     
-    _curGrid = nextGrid;
+    gridSquares_ = nextGrid;
     [self updateCritters:newborns];
+}
+
+/** Remove dead critters from grid squares, add newborns to their grid squares and shift moved critters to the correct grid square.
+ 
+ @param: newCritters: set of newborn critters to add.
+ 
+ */
+- (void) updateCritters:(NSSet *) newCritters
+{
+    NSMutableSet * crittersToRemove = [[NSMutableSet alloc] initWithCapacity:rows_ * cols_]; // Conservative one per square
+    // First find all the dead critters, but do it while moving the living ones around so we're not iterating twice.
+    for (TKGridSquare * square in gridSquares_) {
+        for (TKCritter * critter in [square critters]) {
+            [critter setPosition:[square coordinates]];
+            if ( ! [critter isAlive]) {
+                [crittersToRemove addObject:critter];
+            }
+        }
+    }
+    // Then process the newborns
+    for (TKCritter * newCritter in newCritters) {
+        TKGridSquare * targetSquare = [self gridSquareAtPosition:[newCritter position] inGrid:gridSquares_];
+        [targetSquare addCritter:newCritter];
+        [self addCritterToLivingList:newCritter];
+    }
+    // Then remove the dead critters
+    for (TKCritter * deadCritter in crittersToRemove) {
+        [self removeCritterFromLivingList:deadCritter];
+        [livingCritters_ removeObject:deadCritter];
+        [[self gridSquareAtPosition:[deadCritter position] inGrid:gridSquares_] removeCritter:deadCritter];
+    }
 }
 
 #pragma mark Critter interactions
 - (void) resolveFightBetween:(TKCritter *) blue and:(TKCritter *) red
 {
-    if (red.age > blue.age)
-        [red die];
-    else if (blue.age > red.age)
-        [blue die];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CritterConsoleLog" object:[NSString stringWithFormat:@"resolveFightBetween %@ %f %f and %@ %f %f\n", blue.name, blue.health, blue.strength, red.name, red.health, red.strength]];
+
+    // A bruising battle between equal combatants
+    if (red.strength == blue.strength && red.health == blue.health) {
+        [red reduceStrengthBy:red.strength / 2];
+        [blue reduceStrengthBy:blue.strength / 2];
+        [red reduceHealthBy:red.health / 1.5];
+        [blue reduceHealthBy:blue.health / 1.5];
+    } else {
+        [red reduceHealthBy:blue.strength];
+        [blue reduceHealthBy:red.strength];
+        [red reduceStrengthBy:red.strength / 1.5];
+        [blue reduceStrengthBy:blue.strength / 1.5];
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CritterConsoleLog" object:[NSString stringWithFormat:@"After the fight %@ %f %f, %@ %f %f\n", blue.name, blue.health, blue.strength, red.name, red.health, red.strength]];
+
 }
 
 - (TKCritter *) resolveMatingBetween:(TKCritter *) piglet and:(TKCritter *) monkey
@@ -172,10 +228,10 @@
     TKCritter * result;
     
     BOOL upForIt = piglet.isReadyToMate && monkey.isReadyToMate;
-    BOOL inSameSqure = matchPositions(piglet.position, monkey.position);
-    BOOL enoughRoom = [[[self gridSquareAtPosition:piglet.position inGrid:_curGrid] critters] count] < OVERCROWDING_LIMIT;
+    BOOL inSameSquare = matchPositions(piglet.position, monkey.position);
+    BOOL enoughRoom = [[[self gridSquareAtPosition:piglet.position inGrid:gridSquares_] critters] count] < OVERCROWDING_LIMIT;
     
-    if (upForIt && inSameSqure && enoughRoom) {
+    if (upForIt && inSameSquare && enoughRoom) {
         Gender itsA = rand() % 2;
         result = [self newCritterWithSex:itsA name:[NSString stringWithFormat:@"%@+%@", piglet.name, piglet.target.name]];
         [result setPosition:[piglet position]];
@@ -185,10 +241,45 @@
     return result;
 }
 
+- (void) resolveEating:(TKCritter *) nibbler
+{
+    TKGridSquare * square = [self gridSquareAtPosition:nibbler.position inGrid:gridSquares_];
+    // Try and optimally use resources; take only what we need, but as much as we can.
+    TKResource * bestResource;
+    float requiredFood = MAX_HEALTH - nibbler.health;
+    for (TKResource * resource in square.resources) {
+        // Is there actually food here.
+        if (resource.type == Food && resource.quantity > MIN_RESOURCE_QUANTITY) {
+            // If so, then have we already got a candidate for the optimal resource? Set it to this, if not
+            if (bestResource == nil)
+                bestResource = resource;
+            // If so, then is this resource better than our previous best?
+            else if (resource.quantity <= requiredFood && resource.quantity > bestResource.quantity) {
+                bestResource = resource;
+            } else if (resource.quantity > requiredFood && resource.quantity <= bestResource.quantity) {
+                bestResource = resource;
+            }
+        }
+    }
+    // Shouldn't be nil ever! We should only try and eat when there's food, but you never know
+    if (bestResource != nil) {
+        float qty = MIN(bestResource.quantity, requiredFood);
+        NSString * msg = [NSString stringWithFormat:@"%@ needs %f, eating %f of %f at %d,%d\n", nibbler.name, requiredFood, qty, bestResource.quantity, nibbler.position.col, nibbler.position.row];
+        [nibbler increaseHealthBy:qty];
+        [bestResource setQuantity:bestResource.quantity - qty];
+        [nibbler resetStrength];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"CritterConsoleLog" object:msg];
+
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"CritterConsoleLog" object:@"Tried to eat food when none was there. Error in resolveEating?\n"];
+
+    }
+}
+
 #pragma mark Utility methods - used for initial population seed only
 - (TKCritter *) makeCritterAtPos:(Position)pos ofSex:(Gender)sex
 {
-    return [self makeCritterAtPos:pos ofSex:sex inGrid:_curGrid];
+    return [self makeCritterAtPos:pos ofSex:sex inGrid:gridSquares_];
 }
 
 - (TKCritter *) makeCritterAtPos:(Position) pos ofSex:(Gender)sex inGrid:(NSArray *) theGrid;
@@ -198,7 +289,7 @@
     [critter setPosition:pos];
     TKGridSquare * home = [self gridSquareAtPosition:pos inGrid:theGrid];
     [home addCritter:critter];
-    [self addCritterToList:critter];
+    [self addCritterToLivingList:critter];
     
     return critter;
 }
@@ -219,45 +310,14 @@
     [dest addCritter:critter];
 }
 
-- (void) updateCritters:(NSSet *) newCritters
-{
-    int bornThisTurn = 0;
-    int diedThisTurn = 0;
-    
-    NSMutableSet * crittersToRemove = [[NSMutableSet alloc] initWithCapacity:10];
-    for (TKGridSquare * square in _curGrid) {
-        for (TKCritter * critter in [square critters]) {
-            [critter setPosition:[square coordinates]];
-            if ( ! [critter isAlive]) {
-                [crittersToRemove addObject:critter];
-                NSLog(@"Removing dead critter %@", critter);
-            }
-        }
-    }
-    for (TKCritter * newCritter in newCritters) {
-        TKGridSquare * targetSquare = [self gridSquareAtPosition:[newCritter position] inGrid:_curGrid];
-        [targetSquare addCritter:newCritter];
-        [self addCritterToList:newCritter];
-        bornThisTurn++;
-    }
-    for (TKCritter * deadCritter in crittersToRemove) {
-        [self removeCritterFromList:deadCritter];
-        [livingCritters_ removeObject:deadCritter];
-        [[self gridSquareAtPosition:[deadCritter position] inGrid:_curGrid] removeCritter:deadCritter];
-        diedThisTurn++;
-    }
-    
-    NSLog(@"Born: %d died: %d", bornThisTurn, diedThisTurn);
-}
-
-- (void) addCritterToList:(TKCritter *) critter
+- (void) addCritterToLivingList:(TKCritter *) critter
 {
     [self willChangeValueForKey:@"critterCountLabel"];
     [livingCritters_ addObject:critter];
     [self didChangeValueForKey:@"critterCountLabel"];
 }
 
-- (void) removeCritterFromList:(TKCritter *) deadCritter
+- (void) removeCritterFromLivingList:(TKCritter *) deadCritter
 {
     [self willChangeValueForKey:@"critterCountLabel"];
     [livingCritters_ removeObject:deadCritter];

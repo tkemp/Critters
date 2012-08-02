@@ -19,6 +19,7 @@
 		BC430E6715C09A34006978B4 /* TKGridSquare.m in Sources */ = {isa = PBXBuildFile; fileRef = BC430E6615C09A34006978B4 /* TKGridSquare.m */; };
 		BC4CE78715C1E5B5006CA29D /* TKCritterWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4CE78515C1E5B5006CA29D /* TKCritterWindowController.m */; };
 		BC4CE78C15C1F022006CA29D /* TKTopDownWorldView.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4CE78A15C1F022006CA29D /* TKTopDownWorldView.m */; };
+		BC9164F415C70834000ADB0F /* TKResource.m in Sources */ = {isa = PBXBuildFile; fileRef = BC9164F315C70834000ADB0F /* TKResource.m */; };
 		BC9348A615C32C0C009C9CD6 /* TKGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = BC9348A515C32C0C009C9CD6 /* TKGrid.m */; };
 		BC9348A915C351E3009C9CD6 /* TKCritterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BC9348A815C351E3009C9CD6 /* TKCritterAction.m */; };
 /* End PBXBuildFile section */
@@ -49,6 +50,8 @@
 		BC4CE78515C1E5B5006CA29D /* TKCritterWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKCritterWindowController.m; sourceTree = "<group>"; };
 		BC4CE78915C1F022006CA29D /* TKTopDownWorldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.objj.h; path = TKTopDownWorldView.h; sourceTree = "<group>"; };
 		BC4CE78A15C1F022006CA29D /* TKTopDownWorldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKTopDownWorldView.m; sourceTree = "<group>"; };
+		BC9164F215C70834000ADB0F /* TKResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKResource.h; sourceTree = "<group>"; };
+		BC9164F315C70834000ADB0F /* TKResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKResource.m; sourceTree = "<group>"; };
 		BC9348A415C32C0C009C9CD6 /* TKGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGrid.h; sourceTree = "<group>"; };
 		BC9348A515C32C0C009C9CD6 /* TKGrid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKGrid.m; sourceTree = "<group>"; };
 		BC9348A715C351E3009C9CD6 /* TKCritterAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = TKCritterAction.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -129,6 +132,8 @@
 		BC430E5D15C072E6006978B4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				BC9164F215C70834000ADB0F /* TKResource.h */,
+				BC9164F315C70834000ADB0F /* TKResource.m */,
 				BC9348A415C32C0C009C9CD6 /* TKGrid.h */,
 				BC9348A515C32C0C009C9CD6 /* TKGrid.m */,
 				BC430E6115C074C6006978B4 /* constants.h */,
@@ -240,6 +245,7 @@
 				BC4CE78C15C1F022006CA29D /* TKTopDownWorldView.m in Sources */,
 				BC9348A615C32C0C009C9CD6 /* TKGrid.m in Sources */,
 				BC9348A915C351E3009C9CD6 /* TKCritterAction.m in Sources */,
+				BC9164F415C70834000ADB0F /* TKResource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
