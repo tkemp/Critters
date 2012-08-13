@@ -11,6 +11,7 @@
 
 @implementation TKCritter
 {
+    CFUUIDRef uniqueID_;
     float strength_;
     float health_;
     int age_;
@@ -43,8 +44,14 @@
         sex_ = gender;
         isAlive_ = YES;
         target = nil;
+        uniqueID_ = CFUUIDCreate(kCFAllocatorDefault);
     }
     return self;
+}
+
+- (NSString *) uniqueID
+{
+    return CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, uniqueID_));
 }
 
 #pragma mark This critter's state
@@ -93,7 +100,7 @@
                 result.action = Move;
             }
             NSString * msg = [NSString stringWithFormat:@"%@ %d,%d Found food dir:%d,%d\n", self.name, self.position.col, self.position.row, nearestFood.dCol, nearestFood.dRow];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"CritterConsoleLog" object:msg];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NTFY_CONSOLE_LOG object:msg];
 
         } else {
             result.direction = Directions[randomDirection()];

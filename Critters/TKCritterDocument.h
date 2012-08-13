@@ -23,4 +23,7 @@
 - (void) evaluate;
 - (void) makeRandomPopulation;
 
+- (TKGridSquare *) gridSquareAtPosition:(Position) pos;
+- (TKCritter *) critterWithID:(NSString *) critterID;
+
 @end

@@ -12,6 +12,7 @@
 @implementation TKCritterWindowController
 
 @synthesize worldView;
+@synthesize critterDetailView;
 @synthesize debugTextView;
 @synthesize document;
 
@@ -22,6 +23,7 @@
     self = [super initWithWindowNibName:@"TKCritterDocumentWindow"];
     if (self) {
         // Initialization code here.
+        //[[NSBundle mainBundle] loadNibNam]
     }
     
     return self;
@@ -32,7 +34,11 @@
     [super windowDidLoad];
     [worldView setCols:document.cols];
     [worldView setRows:document.rows];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logScreenMessage:) name:@"CritterConsoleLog" object:nil];
+    
+    // Set up notifications from model core
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logScreenMessage:) name:NTFY_CONSOLE_LOG object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(critterDied:) name:NTFY_CRITTER_DIED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resourceDepleted:) name:NTFY_RESOURCE_DEPLETED object:nil];
 }
 
 #pragma mark Action handlers
@@ -49,7 +55,7 @@
         TKGridSquare * square = [[doc world] gridSquareAtIndex:i];
         for (TKCritter * critter in [square critters]) {
             NSString * msg = [NSString stringWithFormat:@"%@ sharing: %ld\n", critter.description, square.critters.count];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"CritterConsoleLog" object:msg];
+            [[NSNotificationCenter defaultCenter] postNotificationName:NTFY_CONSOLE_LOG object:msg];
         }
         [worldView plotSquare:square];
     }
@@ -66,9 +72,29 @@
 }
 
 #pragma mark Main stuff
+- (void) critterDied:(NSNotification *) notification
+{
+    if ([notification.object isKindOfClass:[NSString class]]) {
+        NSString * critterID = [notification object];
+        [worldView removeCritterDisplay:critterID];
+    }
+}
 
+- (void) resourceDepleted:(NSNotification *) notification
+{
+    if ([notification.object isKindOfClass:[NSString class]]) {
+        NSString * resourceID = [notification object];
+        [worldView removeResourceDisplay:resourceID];
+    }
+}
 
 #pragma mark Debug/dev stuff
+- (void) critterClickedWithID:(NSString *) critterID
+{
+    TKCritter * clickedCritter = [document critterWithID:critterID];
+    [critterDetailView setActiveCritter:clickedCritter];
+}
+
 - (void) logScreenMessage:(NSNotification *) notification
 {
     NSString * msg = [notification object];

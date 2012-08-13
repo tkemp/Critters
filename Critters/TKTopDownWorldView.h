@@ -11,11 +11,16 @@
 #import "TKGridSquare.h"
 #import "TKCritter.h"
 
+@class TKCritterWindowController;
+
 @interface TKTopDownWorldView : NSView
 
 @property int cols;
 @property int rows;
+@property(assign) IBOutlet TKCritterWindowController * critterWC;
 
 - (void) plotSquare:(TKGridSquare *) square;
+- (void) removeCritterDisplay:(NSString *) critterID;
+- (void) removeResourceDisplay:(NSString *) resourceID;
 
 @end

@@ -29,7 +29,8 @@
 - (TKGridSquare *) gridSquareAtIndex:(int) index;
 - (void) evaluate;
 
-#pragma mark Critter interactions
+#pragma mark Critter interaction & management
+- (TKCritter *) critterWithID:(NSString *) critterID;
 #pragma mark Utility methods - used for initial population seed only
 - (TKCritter *) makeCritterAtPos:(Position) pos ofSex:(Gender) sex;
 #pragma mark General utility methods
@@ -40,6 +41,5 @@
 - (int) indexFromCol:(int) col row:(int) row;
 - (int) colFromIndex:(int) index;
 - (int) rowFromIndex:(int) index;
-#pragma mark Manual property accessors
 
 @end

@@ -198,13 +198,14 @@
         [self removeCritterFromLivingList:deadCritter];
         [livingCritters_ removeObject:deadCritter];
         [[self gridSquareAtPosition:[deadCritter position] inGrid:gridSquares_] removeCritter:deadCritter];
+        [self postWorldEventNotification:CritterDied payload:deadCritter.uniqueID];
     }
 }
 
-#pragma mark Critter interactions
+#pragma mark Critter interaction & management
 - (void) resolveFightBetween:(TKCritter *) blue and:(TKCritter *) red
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CritterConsoleLog" object:[NSString stringWithFormat:@"resolveFightBetween %@ %f %f and %@ %f %f\n", blue.name, blue.health, blue.strength, red.name, red.health, red.strength]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NTFY_CONSOLE_LOG object:[NSString stringWithFormat:@"resolveFightBetween %@ %f %f and %@ %f %f\n", blue.name, blue.health, blue.strength, red.name, red.health, red.strength]];
 
     // A bruising battle between equal combatants
     if (red.strength == blue.strength && red.health == blue.health) {
@@ -219,7 +220,7 @@
         [blue reduceStrengthBy:blue.strength / 1.5];
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CritterConsoleLog" object:[NSString stringWithFormat:@"After the fight %@ %f %f, %@ %f %f\n", blue.name, blue.health, blue.strength, red.name, red.health, red.strength]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NTFY_CONSOLE_LOG object:[NSString stringWithFormat:@"After the fight %@ %f %f, %@ %f %f\n", blue.name, blue.health, blue.strength, red.name, red.health, red.strength]];
 
 }
 
@@ -259,6 +260,9 @@
             } else if (resource.quantity > requiredFood && resource.quantity <= bestResource.quantity) {
                 bestResource = resource;
             }
+        } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:NTFY_CONSOLE_LOG object:[NSString stringWithFormat:@"Error! trying to eat nothing\n"]];
+
         }
     }
     // Shouldn't be nil ever! We should only try and eat when there's food, but you never know
@@ -268,12 +272,28 @@
         [nibbler increaseHealthBy:qty];
         [bestResource setQuantity:bestResource.quantity - qty];
         [nibbler resetStrength];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"CritterConsoleLog" object:msg];
+        [[NSNotificationCenter defaultCenter] postNotificationName:NTFY_CONSOLE_LOG object:msg];
+        if (bestResource.quantity == 0) {
+            [self postWorldEventNotification:ResourceDepleted payload:bestResource.uniqueID];
+        }
 
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"CritterConsoleLog" object:@"Tried to eat food when none was there. Error in resolveEating?\n"];
-
+        [[NSNotificationCenter defaultCenter] postNotificationName:NTFY_CONSOLE_LOG object:@"Tried to eat food when none was there. Error in resolveEating?\n"];
     }
+}
+
+- (TKCritter *) critterWithID:(NSString *) idToFind
+{
+    TKCritter * result = nil;
+    
+    for (TKCritter * critter in livingCritters_) {
+        if ([critter.uniqueID isEqualToString:idToFind]) {
+            result = critter;
+            break;
+        }
+    }
+    
+    return result;
 }
 
 #pragma mark Utility methods - used for initial population seed only
@@ -363,6 +383,34 @@
 - (int) rowFromIndex:(int) index
 {
     return index / cols_;
+}
+
+/** Send an NSNotification about a significant world event. Used to maintain an asynchronous, loose coupling between the UI's representation of world state and the world model. Main purpose is to notify the UI of dead critters and depleted resources, since simple additions and changes are handled by the tick-driven update. This is not intended to become a generalised messaging bus between different subsystems, rather to keep a clean MVC approach with a rapidly changing UI and model.
+
+ The only consumer of these notifications (so far) is the TKCritterWindowController class which has callbacks associated with each event type.
+ 
+ @param: event Is the WorldEvent enum for the particular state change that happened. Defined in constants.h
+ @param: payload Usually an NSString identifying the ID of the depleted resource or dead critter, so that the UI can remove its representation from the screen.
+ 
+ */
+- (void) postWorldEventNotification:(WorldEvent) event payload:(NSObject *) payload
+{
+    NSString * eventName = nil;
+    
+    switch (event) {
+        case CritterDied:
+            eventName = NTFY_CRITTER_DIED;
+            break;
+        case ResourceDepleted:
+            eventName = NTFY_RESOURCE_DEPLETED;
+            break;
+        default:
+            break;
+    }
+    
+    if (eventName != nil && payload != nil) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:eventName object:payload];
+    }
 }
 
 #pragma mark Manual property acccessors

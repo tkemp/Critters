@@ -59,8 +59,16 @@
             [square addResource:newRes];
         }
     }
-    
-    [_windowController listCrittersClicked:self];
+}
+
+- (TKGridSquare *) gridSquareAtPosition:(Position)pos
+{
+    return [self.world gridSquareAtPosition:pos inGrid:self.world.gridSquares];
+}
+
+- (TKCritter *) critterWithID:(NSString *)critterID
+{
+    return [world_ critterWithID:critterID];
 }
 
 #pragma mark NSDocument stuff

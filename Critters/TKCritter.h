@@ -15,6 +15,7 @@
 @interface TKCritter : NSObject
 
 @property(strong) NSString * name;
+@property(readonly, strong) NSString * uniqueID;
 @property(readonly) float strength;
 @property(readonly) float health;
 @property(readonly) int age;

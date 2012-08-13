@@ -9,8 +9,24 @@
 #import "TKResource.h"
 
 @implementation TKResource
-
+{
+    CFUUIDRef uniqueID_;
+}
 @synthesize type;
 @synthesize quantity;
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        uniqueID_ = CFUUIDCreate(kCFAllocatorDefault);
+    }
+    return self;
+}
+
+- (NSString *) uniqueID
+{
+    return CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, uniqueID_));
+}
 
 @end

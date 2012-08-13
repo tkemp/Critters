@@ -12,6 +12,7 @@
 @interface TKResource : NSObject
 
 @property ResourceType type;
+@property(readonly, strong) NSString * uniqueID;
 @property float quantity;
 
 @end

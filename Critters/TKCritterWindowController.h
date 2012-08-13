@@ -7,12 +7,14 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "TKCritterDetailView.h"
 #import "TKTopDownWorldView.h"
 
 @class TKCritterDocument;
 
 @interface TKCritterWindowController : NSWindowController
-@property (weak) IBOutlet TKTopDownWorldView *worldView;
+@property (weak) IBOutlet TKTopDownWorldView * worldView;
+@property (weak) IBOutlet TKCritterDetailView * critterDetailView;
 @property (unsafe_unretained) IBOutlet NSTextView *debugTextView;
 @property (weak) TKCritterDocument * document;
 
@@ -20,6 +22,6 @@
 - (IBAction)listCrittersClicked:(id)sender;
 - (IBAction)evaluateClicked:(id)sender;
 
-- (void) logScreenMessage:(NSNotification *) notification;
+- (void) critterClickedWithID:(NSString *) critterID;
 
 @end

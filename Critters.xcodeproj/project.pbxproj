@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC26D51715D82F2A00DC2CBF /* TKCritterDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = BC26D51615D82F2A00DC2CBF /* TKCritterDetailView.m */; };
 		BC430E3E15C072AB006978B4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC430E3D15C072AB006978B4 /* Cocoa.framework */; };
 		BC430E4815C072AB006978B4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BC430E4615C072AB006978B4 /* InfoPlist.strings */; };
 		BC430E4A15C072AC006978B4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BC430E4915C072AC006978B4 /* main.m */; };
@@ -19,12 +20,15 @@
 		BC430E6715C09A34006978B4 /* TKGridSquare.m in Sources */ = {isa = PBXBuildFile; fileRef = BC430E6615C09A34006978B4 /* TKGridSquare.m */; };
 		BC4CE78715C1E5B5006CA29D /* TKCritterWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4CE78515C1E5B5006CA29D /* TKCritterWindowController.m */; };
 		BC4CE78C15C1F022006CA29D /* TKTopDownWorldView.m in Sources */ = {isa = PBXBuildFile; fileRef = BC4CE78A15C1F022006CA29D /* TKTopDownWorldView.m */; };
+		BC694B4615D1D47D001AA3E1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC694B3F15D1D234001AA3E1 /* QuartzCore.framework */; };
 		BC9164F415C70834000ADB0F /* TKResource.m in Sources */ = {isa = PBXBuildFile; fileRef = BC9164F315C70834000ADB0F /* TKResource.m */; };
 		BC9348A615C32C0C009C9CD6 /* TKGrid.m in Sources */ = {isa = PBXBuildFile; fileRef = BC9348A515C32C0C009C9CD6 /* TKGrid.m */; };
 		BC9348A915C351E3009C9CD6 /* TKCritterAction.m in Sources */ = {isa = PBXBuildFile; fileRef = BC9348A815C351E3009C9CD6 /* TKCritterAction.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BC26D51515D82F2A00DC2CBF /* TKCritterDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKCritterDetailView.h; sourceTree = "<group>"; };
+		BC26D51615D82F2A00DC2CBF /* TKCritterDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKCritterDetailView.m; sourceTree = "<group>"; };
 		BC430E3915C072AB006978B4 /* Critters.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Critters.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC430E3D15C072AB006978B4 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		BC430E4015C072AB006978B4 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -50,6 +54,9 @@
 		BC4CE78515C1E5B5006CA29D /* TKCritterWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKCritterWindowController.m; sourceTree = "<group>"; };
 		BC4CE78915C1F022006CA29D /* TKTopDownWorldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.objj.h; path = TKTopDownWorldView.h; sourceTree = "<group>"; };
 		BC4CE78A15C1F022006CA29D /* TKTopDownWorldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKTopDownWorldView.m; sourceTree = "<group>"; };
+		BC694B3D15D1D228001AA3E1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		BC694B3F15D1D234001AA3E1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		BC694B4115D1D23F001AA3E1 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
 		BC9164F215C70834000ADB0F /* TKResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKResource.h; sourceTree = "<group>"; };
 		BC9164F315C70834000ADB0F /* TKResource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKResource.m; sourceTree = "<group>"; };
 		BC9348A415C32C0C009C9CD6 /* TKGrid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKGrid.h; sourceTree = "<group>"; };
@@ -63,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC694B4615D1D47D001AA3E1 /* QuartzCore.framework in Frameworks */,
 				BC430E3E15C072AB006978B4 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -73,6 +81,9 @@
 		BC430E2E15C072AB006978B4 = {
 			isa = PBXGroup;
 			children = (
+				BC694B4115D1D23F001AA3E1 /* Quartz.framework */,
+				BC694B3F15D1D234001AA3E1 /* QuartzCore.framework */,
+				BC694B3D15D1D228001AA3E1 /* CoreGraphics.framework */,
 				BC430E4315C072AB006978B4 /* Critters */,
 				BC430E3C15C072AB006978B4 /* Frameworks */,
 				BC430E3A15C072AB006978B4 /* Products */,
@@ -152,6 +163,8 @@
 		BC4CE78315C1E58E006CA29D /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				BC26D51515D82F2A00DC2CBF /* TKCritterDetailView.h */,
+				BC26D51615D82F2A00DC2CBF /* TKCritterDetailView.m */,
 				BC430E5215C072AC006978B4 /* TKCritterDocumentWindow.xib */,
 				BC430E5515C072AC006978B4 /* MainMenu.xib */,
 				BC4CE78415C1E5B5006CA29D /* TKCritterWindowController.h */,
@@ -246,6 +259,7 @@
 				BC9348A615C32C0C009C9CD6 /* TKGrid.m in Sources */,
 				BC9348A915C351E3009C9CD6 /* TKCritterAction.m in Sources */,
 				BC9164F415C70834000ADB0F /* TKResource.m in Sources */,
+				BC26D51715D82F2A00DC2CBF /* TKCritterDetailView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

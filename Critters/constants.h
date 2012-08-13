@@ -19,7 +19,17 @@
 #define MIN_RESOURCE_QUANTITY 0.0
 #define MAX_RESOURCE_QUANTITY 1.0
 
+#pragma mark Notifications
+#define NTFY_CONSOLE_LOG @"NotificationCritterConsoleLog"
+#define NTFY_CRITTER_DIED @"NotificationCritterDied"
+#define NTFY_RESOURCE_DEPLETED @"NotificationResourceDepleted"
+
 #pragma mark Critter & world information
+
+typedef enum WorldEvent {
+    CritterDied,
+    ResourceDepleted
+} WorldEvent;
 
 typedef BOOL Gender;
 typedef enum Action {
