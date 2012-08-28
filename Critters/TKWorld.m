@@ -121,7 +121,11 @@
 
 #pragma mark Main evaluation loop & state management
 
-/** Main evaluation function, run once each tick of the simulation clock
+/// ----------------------------
+/// @name The rules of the game
+/// ----------------------------
+
+/** Main evaluation function, run once each tick of the simulation clock.
  
  Copies the current grid to a temporary grid, processes into that grid, then copies the temp grid to the main grid. Then iterates through each critter and updates their internal position reference to match the grid.
  
@@ -145,7 +149,7 @@
         Position newPos = [self positionForDirection:dir fromPos:[critter position]];
         switch ([nextMove action]) {
             case Move:
-                [critter reduceHealthBy:0.1];
+                [critter reduceStrengthBy:0.05];
                 break;
             case Mate:
             {
@@ -163,6 +167,9 @@
             default:
                 break;
         }
+        // Aging
+        [critter reduceHealthBy:0.01];
+        // Move them all around
         [self moveCritter:critter fromPosition:[critter position] toPosition:newPos toGrid:nextGrid];
     }
     
@@ -205,7 +212,7 @@
 #pragma mark Critter interaction & management
 - (void) resolveFightBetween:(TKCritter *) blue and:(TKCritter *) red
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:NTFY_CONSOLE_LOG object:[NSString stringWithFormat:@"resolveFightBetween %@ %f %f and %@ %f %f\n", blue.name, blue.health, blue.strength, red.name, red.health, red.strength]];
+    [self postConsoleMessage:[NSString stringWithFormat:@"resolveFightBetween %@ %f %f and %@ %f %f\n", blue.name, blue.health, blue.strength, red.name, red.health, red.strength]];
 
     // A bruising battle between equal combatants
     if (red.strength == blue.strength && red.health == blue.health) {
@@ -220,8 +227,7 @@
         [blue reduceStrengthBy:blue.strength / 1.5];
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:NTFY_CONSOLE_LOG object:[NSString stringWithFormat:@"After the fight %@ %f %f, %@ %f %f\n", blue.name, blue.health, blue.strength, red.name, red.health, red.strength]];
-
+    [self postConsoleMessage:[NSString stringWithFormat:@"After the fight %@ %f %f, %@ %f %f\n", blue.name, blue.health, blue.strength, red.name, red.health, red.strength]];
 }
 
 - (TKCritter *) resolveMatingBetween:(TKCritter *) piglet and:(TKCritter *) monkey
@@ -261,7 +267,7 @@
                 bestResource = resource;
             }
         } else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:NTFY_CONSOLE_LOG object:[NSString stringWithFormat:@"Error! trying to eat nothing\n"]];
+            [self postConsoleMessage:[NSString stringWithFormat:@"Error! trying to eat nothing\n"]];
 
         }
     }
@@ -272,13 +278,14 @@
         [nibbler increaseHealthBy:qty];
         [bestResource setQuantity:bestResource.quantity - qty];
         [nibbler resetStrength];
-        [[NSNotificationCenter defaultCenter] postNotificationName:NTFY_CONSOLE_LOG object:msg];
+        [self postConsoleMessage:msg];
         if (bestResource.quantity == 0) {
             [self postWorldEventNotification:ResourceDepleted payload:bestResource.uniqueID];
+            [square removeResource:bestResource];
         }
 
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:NTFY_CONSOLE_LOG object:@"Tried to eat food when none was there. Error in resolveEating?\n"];
+        [self postConsoleMessage:@"Tried to eat food when none was there. Error in resolveEating?\n"];
     }
 }
 
@@ -360,6 +367,41 @@
     return result;
 }
 
+/** This method returns the Direction needed to reach a target Position from another Position.
+ It currently only works where both positions are in the same local neighbourhood. I need to implement a pathfinding algorithm for cases where we need to reach a distant square; it's not required now since the critters can only see their immediate eight neighbours. I haven't figured out the general case yet - it shouldn't be that hard!
+ 
+ @param: Position to - where we're headed.
+ @param: Position from - where we are
+ @return Direction - the Direction vector required to effect the movement.
+ 
+ */
+- (Direction) directionTo:(Position) to from:(Position) from
+{
+    Direction result = {0, 0};
+    
+    int dCol = to.col - from.col;
+    int dRow = to.row - from.row;
+    
+    // Handle wrapping - this is hideous
+	if (dCol < -1)
+		dCol += cols_;
+	if (dCol > 1)
+		dCol -= cols_;
+	if (dRow < -1)
+		dRow += rows_;
+	if (dRow > 1)
+		dRow -= rows_;
+
+    // For shame.
+    ///TODO: Figure out the general case!
+    assert(dCol >= -1 && dCol <= 1 && dRow >= -1 && dRow <= 1);
+    
+    result.dCol = dCol;
+    result.dRow = dRow;
+    
+    return result;
+}
+
 - (Position) positionFromIndex:(int) index
 {
     Position result;
@@ -411,6 +453,12 @@
     if (eventName != nil && payload != nil) {
         [[NSNotificationCenter defaultCenter] postNotificationName:eventName object:payload];
     }
+}
+
+- (void) postConsoleMessage:(NSString *) message
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:NTFY_CONSOLE_LOG object:message];
+
 }
 
 #pragma mark Manual property acccessors

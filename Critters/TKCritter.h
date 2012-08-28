@@ -11,6 +11,13 @@
 #import "TKCritterAction.h"
 
 @class TKWorld;
+@class TKCritter;
+
+@protocol TKCritterBrain
+
+- (TKCritterAction *) actionForEnvironment:(NSArray *) environment critter:(TKCritter *) critter;
+
+@end
 
 @interface TKCritter : NSObject
 
@@ -23,7 +30,11 @@
 @property(readonly) BOOL isReadyToMate;
 @property BOOL isAlive;
 @property Position position;
+@property(readonly) int col; // So we can bind to position
+@property(readonly) int row;
 @property(weak) TKCritter * target;
+@property(strong) id<TKCritterBrain> delegate;
+@property(readonly) TKWorld * world;
 
 - (id) initWithSex:(Gender) gender world:(TKWorld *) homeWorld;
 

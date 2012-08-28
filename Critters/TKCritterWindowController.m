@@ -46,6 +46,7 @@
 {
     TKCritterDocument * doc = (TKCritterDocument *) [self document];
     [doc makeRandomPopulation];
+    [self listCrittersClicked:sender];
 }
 
 - (IBAction) listCrittersClicked:(id) sender
@@ -103,6 +104,7 @@
     [textStorage replaceCharactersInRange:NSMakeRange([textStorage length], 0)
                                    withString:msg];
     [textStorage endEditing];
+    [debugTextView scrollRangeToVisible:NSMakeRange([textStorage length], 0)];
 }
 
 @end

@@ -13,9 +13,10 @@
 
 @interface TKCritterDetailView : NSView
 
-@property(assign) IBOutlet TKCritterWindowController * critterWC;
-@property(assign) IBOutlet NSTextFieldCell * test;
+@property (weak) TKCritter * activeCritter;
 
-- (void) setActiveCritter:(TKCritter *) critter;
+@property(assign) IBOutlet TKCritterWindowController * critterWC;
+@property(assign) IBOutlet NSTextFieldCell * txtCritterName;
+@property(assign) IBOutlet NSTextFieldCell * txtCritterID;
 
 @end

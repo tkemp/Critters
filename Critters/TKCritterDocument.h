@@ -12,6 +12,7 @@
 #import "TKGridSquare.h"
 #import "TKCritter.h"
 #import "TKResource.h"
+#import "TKBasicCritterBrain.h"
 #import <stdlib.h>
 
 @interface TKCritterDocument : NSDocument

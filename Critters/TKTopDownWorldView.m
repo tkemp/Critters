@@ -15,11 +15,39 @@
     CALayer * _baseLayer;
     NSMutableDictionary * _critterLayers;
     NSMutableDictionary * _resourceLayers;
+    float _colWidth;
+    float _rowHeight;
+    int rows_;
+    int cols_;
 }
 
-@synthesize cols;
-@synthesize rows;
 @synthesize critterWC;
+
+- (void) setCols:(int) cols
+{
+    [self willChangeValueForKey:@"cols"];
+    cols_ = cols;
+    _colWidth = self.frame.size.width / cols_;
+    [self didChangeValueForKey:@"cols"];
+}
+
+- (int) cols
+{
+    return cols_;
+}
+
+- (void) setRows:(int) rows
+{
+    [self willChangeValueForKey:@"rows"];
+    rows_ = rows;
+    _rowHeight = self.frame.size.height / rows_;
+    [self didChangeValueForKey:@"rows"];
+}
+
+- (int) rows
+{
+    return rows_;
+}
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -45,77 +73,28 @@
     [_baseLayer setNeedsDisplay];
 }
 
+
+
 - (void) drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx
 {
     if (layer == _baseLayer) {
         [self drawGrid:layer inContext:ctx];
     }
-    
-    float colWidth = layer.frame.size.width / self.cols;
-    float rowHeight = layer.frame.size.height / self.rows;
-    
-    for (TKGridSquare * square in _squaresToPlot) {
-        long numCritters = [[square critters] count];
-        float mkWidth = (colWidth / numCritters);
-        float mkHeight = (rowHeight / numCritters);
-        
-        for (int i = 0; i < numCritters; i++) {
-            TKCritter * critter = [[square.critters allObjects] objectAtIndex:i];
-            CALayer * critLayer;
-            // Create a new layer if needed
-            if ((critLayer = [_critterLayers objectForKey:[critter uniqueID]]) == nil) {
-                critLayer = [CALayer layer];
-                [_critterLayers setObject:critLayer forKey:[critter uniqueID]];
-                [_baseLayer addSublayer:critLayer];
-            }
-            
-            NSColor * mkColor = [critter sex] == MALE ? [NSColor blueColor] : [NSColor redColor];
-            CGPoint mkOrigin = CGPointMake(([square coordinates].col * colWidth) + (mkWidth * i), ([square coordinates].row * rowHeight) + (mkHeight * i));
-            NSRect mkRect = NSMakeRect(mkOrigin.x, mkOrigin.y, mkWidth, mkHeight);
-            
-            [critLayer setFrame:mkRect];
-            [critLayer setBackgroundColor:CGColorCreateGenericRGB(mkColor.redComponent, mkColor.greenComponent, mkColor.blueComponent, 1.0)];
-            [critLayer setCornerRadius:6.0];
-        }
-        
-        // Now process resources
-        for (int i = 0; i < square.resources.count; i++) {
-            TKResource * res = [[square.resources allObjects] objectAtIndex:i];
-            if (Food == res.type && res.quantity > MIN_RESOURCE_QUANTITY) {
-                CALayer * resLayer;
-                if ((resLayer = [_resourceLayers objectForKey:[res uniqueID]]) == nil) {
-                    resLayer = [CALayer layer];
-                    [_resourceLayers setObject:resLayer forKey:[res uniqueID]];
-                    [_baseLayer addSublayer:resLayer];
-                }
-                CGPoint foodOrigin = CGPointMake(([square coordinates].col * colWidth) + (5 * i), ([square coordinates].row * rowHeight) + (5 * i));
-                NSRect foodRect = NSMakeRect(foodOrigin.x, foodOrigin.y, 5, 5);
-                [resLayer setFrame:foodRect];
-                [resLayer setBackgroundColor:CGColorCreateGenericRGB([[NSColor brownColor] redComponent], [[NSColor brownColor] greenComponent], [[NSColor brownColor] blueComponent], 1.0)];
-                [resLayer display];
-            }
-        }
-    }
-    
-    [_squaresToPlot removeAllObjects];
 }
 
 - (void) drawGrid:(CALayer *) layer inContext:(CGContextRef) ctx
 {
-    float colWidth = layer.frame.size.width / self.cols;
-    float rowHeight = layer.frame.size.height / self.rows;
-    
     // Draw the grid
     CGMutablePathRef grid = CGPathCreateMutable();
     CGContextBeginPath(ctx);
     
-    for (float i = 0; i <= layer.frame.size.width; i += colWidth) {
+    for (float i = 0; i <= layer.frame.size.width; i += _colWidth) {
         CGPathMoveToPoint(grid, NULL, i, 0);
-        CGPathAddLineToPoint(grid, NULL, i, self.rows * rowHeight);
+        CGPathAddLineToPoint(grid, NULL, i, self.rows * _rowHeight);
     }
-    for (float i = 0; i <= layer.frame.size.height; i += rowHeight) {
+    for (float i = 0; i <= layer.frame.size.height; i += _rowHeight) {
         CGPathMoveToPoint(grid, NULL, 0, i);
-        CGPathAddLineToPoint(grid, NULL, self.cols * colWidth, i);
+        CGPathAddLineToPoint(grid, NULL, self.cols * _colWidth, i);
     }
     
     [[NSColor blackColor] setStroke];
@@ -129,7 +108,47 @@
 
 - (void) plotSquare:(TKGridSquare *) square
 {
-    [_squaresToPlot addObject:square];
+    // Add CALayers for resources
+    for (int i = 0; i < square.resources.count; i++) {
+        TKResource * res = [[square.resources allObjects] objectAtIndex:i];
+        if (Food == res.type && res.quantity > MIN_RESOURCE_QUANTITY) {
+            CALayer * resLayer;
+            if ((resLayer = [_resourceLayers objectForKey:[res uniqueID]]) == nil) {
+                resLayer = [CALayer layer];
+                [_resourceLayers setObject:resLayer forKey:[res uniqueID]];
+                [_baseLayer addSublayer:resLayer];
+            }
+            CGPoint foodOrigin = CGPointMake(([square coordinates].col * _colWidth) + (8 * i), ([square coordinates].row * _rowHeight) + (8 * i));
+            NSRect foodRect = NSMakeRect(foodOrigin.x, foodOrigin.y, 8, 8);
+            [resLayer setFrame:foodRect];
+            [resLayer setBackgroundColor:CGColorCreateGenericRGB([[NSColor brownColor] redComponent], [[NSColor brownColor] greenComponent], [[NSColor brownColor] blueComponent], 0.8)];
+            [resLayer display];
+        }
+    }
+    
+    // CALayers for critters
+    long numCritters = [[square critters] count];
+    float mkWidth = (_colWidth / numCritters);
+    float mkHeight = (_rowHeight / numCritters);
+    for (int i = 0; i < numCritters; i++) {
+        TKCritter * critter = [[square.critters allObjects] objectAtIndex:i];
+        CALayer * critLayer;
+        // Create a new layer if needed
+        if ((critLayer = [_critterLayers objectForKey:[critter uniqueID]]) == nil) {
+            critLayer = [CALayer layer];
+            [_critterLayers setObject:critLayer forKey:[critter uniqueID]];
+            [_baseLayer addSublayer:critLayer];
+        }
+        
+        NSColor * mkColor = [critter sex] == MALE ? [NSColor blueColor] : [NSColor redColor];
+        CGPoint mkOrigin = CGPointMake(([square coordinates].col * _colWidth) + (mkWidth * i), ([square coordinates].row * _rowHeight) + (mkHeight * i));
+        NSRect mkRect = NSMakeRect(mkOrigin.x, mkOrigin.y, mkWidth, mkHeight);
+        
+        [critLayer setFrame:mkRect];
+        [critLayer setBackgroundColor:CGColorCreateGenericRGB(mkColor.redComponent, mkColor.greenComponent, mkColor.blueComponent, 0.8)];
+        [critLayer setCornerRadius:3.0];
+    }
+    
     [_baseLayer setNeedsDisplay];
 }
 

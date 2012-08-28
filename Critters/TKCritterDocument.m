@@ -21,8 +21,8 @@
 {
     self = [super init];
     if (self) {
-        cols = 8;
-        rows = 8;
+        cols = 32;
+        rows = 32;
         world_ = [[TKWorld alloc] initWithCols:self.cols rows:self.rows wrap:YES];
     }
     return self;
@@ -43,21 +43,29 @@
  */
 - (void) makeRandomPopulation
 {
-    // Four critters in random places
+    // Eight critters in random places
     [[world_ makeCritterAtPos:randomPosition(self.cols, self.rows) ofSex:FEMALE] setName:@"Alice"];
     [[world_ makeCritterAtPos:randomPosition(self.cols, self.rows) ofSex:MALE] setName:@"Bob"];
     [[world_ makeCritterAtPos:randomPosition(self.cols, self.rows) ofSex:FEMALE] setName:@"Carol"];
-    [[world_ makeCritterAtPos:randomPosition(self.cols, self.rows) ofSex:FEMALE] setName:@"Dawn"];
+    [[world_ makeCritterAtPos:randomPosition(self.cols, self.rows) ofSex:MALE] setName:@"Dave"];
+    [[world_ makeCritterAtPos:randomPosition(self.cols, self.rows) ofSex:FEMALE] setName:@"Ellen"];
+    [[world_ makeCritterAtPos:randomPosition(self.cols, self.rows) ofSex:MALE] setName:@"Frank"];
+    [[world_ makeCritterAtPos:randomPosition(self.cols, self.rows) ofSex:FEMALE] setName:@"Georgina"];
+    [[world_ makeCritterAtPos:randomPosition(self.cols, self.rows) ofSex:MALE] setName:@"Henry"];
     
     // Random resources
     for (int i = 0; i < self.cols * self.rows; i++) {
-        if (rand() % 8 == 0) {
+        if (rand() % 32 == 0) {
             TKResource * newRes = [[TKResource alloc] init];
             [newRes setType:Food];
             [newRes setQuantity:MAX_RESOURCE_QUANTITY];
             TKGridSquare * square = [world_.gridSquares objectAtIndex:i];
             [square addResource:newRes];
         }
+    }
+    
+    for (TKCritter * critter in [world_ livingCritters]) {
+        [critter setDelegate:[TKBasicCritterBrain sharedInstance]];
     }
 }
 

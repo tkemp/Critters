@@ -37,9 +37,11 @@
 - (TKCritter *) newCritterWithSex:(Gender) sex name:(NSString *) name;
 - (void) moveCritter:(TKCritter *) critter fromPosition:(Position) fromPos toPosition:(Position) toPos toGrid:(NSMutableArray *) toGrid;
 - (Position) positionForDirection:(Direction) direction fromPos:(Position) startPos;
+- (Direction) directionTo:(Position) from from:(Position) to;
 - (Position) positionFromIndex:(int) index;
 - (int) indexFromCol:(int) col row:(int) row;
 - (int) colFromIndex:(int) index;
 - (int) rowFromIndex:(int) index;
+- (void) postConsoleMessage:(NSString *) message;
 
 @end

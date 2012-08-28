@@ -7,7 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TKCritter.h"
+#import "TKWorld.h"
 
-@interface TKBasicCritterBrain : NSObject
+@interface TKBasicCritterBrain : NSObject<TKCritterBrain>
+
++ (TKBasicCritterBrain *) sharedInstance;
 
 @end

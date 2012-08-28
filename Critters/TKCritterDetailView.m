@@ -10,8 +10,12 @@
 #import "TKCritterWindowController.h"
 
 @implementation TKCritterDetailView
+{
+    TKCritter * activeCritter_;
+}
 
-@synthesize test;
+@synthesize txtCritterName;
+@synthesize txtCritterID;
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -25,7 +29,7 @@
 
 - (void) awakeFromNib
 {
-    [test setTitle:@"Hello"];
+    [txtCritterName setTitle:@"Hello"];
 }
 
 - (void)drawRect:(NSRect)dirtyRect
@@ -33,9 +37,14 @@
     // Drawing code here.
 }
 
-- (void) setActiveCritter:(TKCritter *)critter
+- (TKCritter *) activeCritter
 {
-    [test setTitle:critter.name];
+    return activeCritter_;
+}
+
+- (void) setActiveCritter:(TKCritter *) critter
+{
+    activeCritter_ = critter;
 }
 
 @end
