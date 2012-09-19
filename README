@@ -1,0 +1,4 @@
+Critters is a simple simulation of animals who eat, fight, breed and die on a grid of cells. Currently, their 'brain' is a simple, deterministic method which forces them to follow some arbitrary rules in deciding their next action. This is intended to be replaced with various AI approaches (ANNs, genetic programming and so on) whose characteristics can be inherited between generations. It was inspired by this StackOverflow post: http://stackoverflow.com/a/1575154/410894
+
+As it stands now the framework is ready for a better brain. The evolutionary mechanism for passing on traits to offspring doesn't exist yet. The world does enforce its rules properly and manages the state of the grid and the critters well enough for use.
+
