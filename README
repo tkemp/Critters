@@ -2,3 +2,4 @@ Critters is a simple simulation of animals who eat, fight, breed and die on a gr
 
 As it stands now the framework is ready for a better brain. The evolutionary mechanism for passing on traits to offspring doesn't exist yet. The world does enforce its rules properly and manages the state of the grid and the critters well enough for use.
 
+It's straight Cocoa. Tested on OSX 10.7
